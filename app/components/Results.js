@@ -5,6 +5,7 @@ import { FaUser, FaCompass, FaBriefcase, FaUserFriends } from 'react-icons/fa'
 import { battle } from '../utils/api'
 import Card from './Card'
 import Loading from './Loading'
+import Toollip from './Tooltip'
 
 const styles = {
   container: {
@@ -28,67 +29,39 @@ const styles = {
   }
 }
 
-class ProfileList extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      hoveringLocation: false,
-      hoveringCompany: false
-    }
-    this.mouseOver = this.mouseOver.bind(this)
-    this.mouseOut = this.mouseOut.bind(this)
-  }
-  mouseOver(id) {
-    this.setState({ [id]: true })
-  }
-  mouseOut(id) {
-    this.setState({[ id]: false })
-  }
-
-  render() {
-    const { profile } = this.props
-    const { hoveringLocation, hoveringCompany } = this.state
-
-    return(
-      <ul className='card-list'>
+function ProfileList({ profile }) {
+  return(
+    <ul className='card-list'>
+    <li>
+      <FaUser color='rgb(239, 115, 115)' size={22} />
+      {profile.name}
+    </li>
+    {profile.location && (
       <li>
-        <FaUser color='rgb(239, 115, 115)' size={22} />
-        {profile.name}
-      </li>
-      {profile.location && (
-        <li
-          style={styles.container}
-          onMouseOver={() => this.mouseOver('hoveringLocation')}
-          onMouseOut={() => this.mouseOut('hoveringLocation')}
-        >
-          {hoveringLocation === true && <div style={styles.tooltip}>User's location</div>}
+        <Toollip text="User's location">
           <FaCompass color='rgb(144, 115, 255)' size={22} />
           {profile.location}
-        </li>
-      )}
-      {profile.company && (
-        <li
-          style={styles.container}
-          onMouseOver={() => this.mouseOver('hoveringCompany')}
-          onMouseOut={() => this.mouseOut('hoveringCompany')}
-        >
-        {hoveringCompany === true && <div style={styles.tooltip}>User's company</div>}
+        </Toollip>
+      </li>
+    )}
+    {profile.company && (
+      <li>
+        <Toollip text="User's company">
           <FaBriefcase color='#795548' size={22} />
           {profile.company}
-        </li>
-      )}
-      <li>
-        <FaUser color='rgb(129, 195, 245)' size={22} />
-        {profile.followers.toLocaleString()} followers
+        </Toollip>
       </li>
-      <li>
-        <FaUserFriends color='rgb(64, 183, 95)' size={22} />
-        {profile.following.toLocaleString()} following
-      </li>
-    </ul>
-    )
-  }
+    )}
+    <li>
+      <FaUser color='rgb(129, 195, 245)' size={22} />
+      {profile.followers.toLocaleString()} followers
+    </li>
+    <li>
+      <FaUserFriends color='rgb(64, 183, 95)' size={22} />
+      {profile.following.toLocaleString()} following
+    </li>
+  </ul>
+  )
 }
 
 ProfileList.propTypes ={
