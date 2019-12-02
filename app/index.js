@@ -1,14 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import ThemeProvider from './contexts/theme.js'
+import { ThemeProvider } from './contexts/theme'
+import Nav from './components/Nav'
 import './index.css'
 
 import Popular from './components/Popular'
 import Battle from './components/Battle'
 
 class App extends React.Component {
-  constructor() {
+  constructor(props) {
     super(props)
     this.state = {
       theme: 'light',
@@ -23,8 +24,11 @@ class App extends React.Component {
   render() {
     return (
       <ThemeProvider value={this.state}>
-        <div className='container'>
-          <Battle />
+        <div className={this.state.theme}>
+          <div className='container'>
+            <Nav />
+            <Popular />
+          </div>
         </div>
       </ThemeProvider>
     )
